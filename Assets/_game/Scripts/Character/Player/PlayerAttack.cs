@@ -119,7 +119,7 @@ public class PlayerAttack : MonoBehaviour
             {
                 if (player.isMoving) // neu character di chuyen thi cancel vung tay, dong thoi cancel weapon fly
                 {
-                    goto label1;
+                    goto label;
                 }
                 else
                 {
@@ -131,9 +131,9 @@ public class PlayerAttack : MonoBehaviour
             GameObject obj = weaponPool.GetObject(); // lay weapon tu` pool
             obj.transform.position = rightHand.transform.position; // dat weapon vao tay phai character
             ReCaculateTargetWeapon(obj); // dam bao weapon bay qua center cua enemy
-            StartCoroutine(FlyWeaponToTarget(obj, targetWeapon.transform.position, 8f)); // fly weapon
+            StartCoroutine(FlyWeaponToTarget(obj, targetWeapon.transform.position, 10f)); // fly weapon
         }
-    label1:;
+    label:;
         yield return null;
     }
 
@@ -146,7 +146,7 @@ public class PlayerAttack : MonoBehaviour
         {
             if (player.isMoving) // neu di chuyen thi cancel coroutine, vi khi do canAttack == true
             {
-                goto label;
+                goto label1;
             }
             else
             {
@@ -159,7 +159,7 @@ public class PlayerAttack : MonoBehaviour
         {
             characterAnimation.ChangeAnim(Constant.IDLE);
         }
-        label:;
+        label1:;
     }
 
     public IEnumerator FlyWeaponToTarget(GameObject obj, Vector3 target, float speed)

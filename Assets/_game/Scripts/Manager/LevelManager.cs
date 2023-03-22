@@ -35,11 +35,11 @@ public class LevelManager : MonoBehaviour
 
     public void RemakeLevel()
     {
-        currentAlive = initialAlive;
-        isGaming = false;
         DeleteCharacters();
         RespawnCharacters();
         UIManager.instance.ShowJoystick();
+        currentAlive = initialAlive;
+        isGaming = false;
     }
 
     public void DeleteCharacters()
@@ -72,6 +72,17 @@ public class LevelManager : MonoBehaviour
         {
             characterList.Add(BotManager.instance.botList[i]);
             BotManager.instance.Spawn();
+        }
+    }
+
+    public void DeleteThisElementInEnemyLists(Character character)
+    {
+        for (int i = 0; i < characterList.Count; i++)
+        {
+            if (characterList[i].enemyList.Contains(character))
+            {
+                characterList[i].enemyList.Remove(character);
+            }
         }
     }
 }

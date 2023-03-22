@@ -23,6 +23,7 @@ public class Weapon : MonoBehaviour
         {
             Character character = other.gameObject.GetComponent<Character>();
             if(character != this.owner){
+                transform.rotation = Quaternion.Euler(Vector3.zero);
                 weaponPool.ReturnToPool(this.gameObject);
                 //this.owner.TurnBigger();
             }

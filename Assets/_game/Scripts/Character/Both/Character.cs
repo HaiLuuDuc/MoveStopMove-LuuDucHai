@@ -6,8 +6,11 @@ using UnityEngine;
 
 public class Character : MonoBehaviour
 {
-    [SerializeField] private CharacterData characterData;
+    [SerializeField] protected CharacterData characterData;
     [SerializeField] protected GameObject body;
+    [SerializeField] protected Material blackMaterial;
+    [SerializeField] protected Material whiteMaterial;
+    [SerializeField] protected SkinnedMeshRenderer skinnedMeshRenderer;
     private Vector3 characterScaleOffset;
     private Vector3 weaponScaleOffset;
     private float scaleOffset;
@@ -51,14 +54,5 @@ public class Character : MonoBehaviour
         }
     }
 
-    public void DeleteThisElementInEnemyLists(Character character)
-    {
-        for (int i = 0; i < LevelManager.instance.characterList.Count; i++)
-        {
-            if (LevelManager.instance.characterList[i].enemyList.Contains(character))
-            {
-                LevelManager.instance.characterList[i].enemyList.Remove(character);
-            }
-        }
-    }
+    
 }

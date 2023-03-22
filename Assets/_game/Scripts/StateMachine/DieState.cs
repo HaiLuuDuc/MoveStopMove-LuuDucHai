@@ -7,12 +7,15 @@ public class DieState : IState
 {
     float duration;
     float elasedTime;
+    int tempAlive;
     public void OnEnter(Bot bot)
     {
         elasedTime = 0f;
         duration = 2f;
         bot.StopMoving();
         bot.OnDeath(); // in OnDeath, alive--
+        LevelManager.instance.currentAlive--;
+        tempAlive = LevelManager.instance.currentAlive;
     }
     public void OnExecute(Bot bot)
     {
@@ -23,8 +26,7 @@ public class DieState : IState
         else
         {
             BotManager.instance.Despawn(bot);
-            LevelManager.instance.currentAlive--;
-            if (LevelManager.instance.currentAlive > BotManager.instance.size)
+            if (tempAlive > BotManager.instance.size)
             {
                 BotManager.instance.Spawn();
             }

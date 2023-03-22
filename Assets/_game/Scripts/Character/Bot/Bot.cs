@@ -11,6 +11,7 @@ public class Bot : Character
     [SerializeField] private Transform targetWeapon;
     [SerializeField] private WeaponPool weaponPool;
     [SerializeField] private CapsuleCollider capsulCollider;
+    [SerializeField] private Target target;
     private IState currentState = new PatrolState();
     private float attackRange = 9f;
     private Vector3 enemyPosition;
@@ -49,10 +50,12 @@ public class Bot : Character
         onHandWeapon.SetActive(true);
         onHandWeapon.transform.SetParent(rightHand.transform);
         onHandWeapon.transform.localPosition = Vector3.zero;
+        skinnedMeshRenderer.material = whiteMaterial;
         isDead = false;
         enemyList.Clear();
         ActiveNavmeshAgent();
         ChangeState(new PatrolState());
+        target.enabled = true;
     }
 
     public void OnDeath()
@@ -60,6 +63,9 @@ public class Bot : Character
         capsulCollider.enabled = false;
         characterAnimation.ChangeAnim(Constant.DIE);
         onHandWeapon.SetActive(false);
+        skinnedMeshRenderer.material = blackMaterial;
+        target.enabled = false;
+        LevelManager.instance.DeleteThisElementInEnemyLists(this);
     }
 
     public void Move()
@@ -167,6 +173,20 @@ public class Bot : Character
         navMeshAgent.enabled = false;
     }
 
+    public bool CheckDestinationIsOutOfMap()
+    {
+        Vector3 pos = destinationTransform.position;
+        if (!(
+            pos.x > BotManager.instance.topLeftCorner.position.x &&
+            pos.x < BotManager.instance.bottomRightCorner.position.x &&
+            pos.z > BotManager.instance.bottomRightCorner.position.z &&
+            pos.z < BotManager.instance.topLeftCorner.position.z
+            ))
+        {
+            return true;
+        }
+        return false;
+    }
 
     public void OnTriggerEnter(Collider other)
     {
@@ -178,7 +198,6 @@ public class Bot : Character
         {
             ChangeState(new DieState());
             isDead = true;
-            DeleteThisElementInEnemyLists(this);
         }
     }
 }

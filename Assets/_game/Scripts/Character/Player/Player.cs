@@ -20,11 +20,14 @@ public class Player : Character
         enemyList.Clear();
         transform.position = new Vector3(30.1900005f, 56.0499992f, -8.63000011f);
         characterAnimation.ChangeAnim(Constant.IDLE);
+        skinnedMeshRenderer.material = whiteMaterial;
     }
 
     public void OnDeath() {
         characterAnimation.ChangeAnim(Constant.DIE);
         isDead = true;
+        skinnedMeshRenderer.material = blackMaterial;
+        LevelManager.instance.DeleteThisElementInEnemyLists(this);
         LevelManager.instance.currentAlive--;
         LevelManager.instance.characterList.Remove(this);
         UIManager.instance.ShowLosePanel();
@@ -35,7 +38,6 @@ public class Player : Character
         if (other.CompareTag(Constant.WEAPON) && other.GetComponent<Weapon>().owner != this)
         {
             OnDeath();
-            DeleteThisElementInEnemyLists(this);
         }
     }
 }

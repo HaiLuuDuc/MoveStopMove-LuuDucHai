@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class BotManager : MonoBehaviour
 {
-    [SerializeField] private Transform topLeftCorner;
-    [SerializeField] private Transform bottomRightCorner;
+    public Transform topLeftCorner;
+    public Transform bottomRightCorner;
     [SerializeField] private float spawnDistance;
     public BotPool botPool;
     public float initialY;
@@ -56,7 +56,7 @@ public class BotManager : MonoBehaviour
         pooledBot.transform.position = spawnPosition;
         pooledBot.transform.rotation = Quaternion.Euler(spawnRotation);
         pooledBot.OnInit();
-        if (!botList.Contains(pooledBot))
+        if (botList.Count<size)
         {
             botList.Add(pooledBot);
         }

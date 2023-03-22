@@ -13,9 +13,9 @@ public class PatrolState : IState
     {
         elapsedTime = 0f;
         duration = Random.Range(4f, 7f);
-        randomRotateValue = Random.Range(0.3f,0.4f);
+        randomRotateValue = Random.Range(0.4f,0.6f);
+        bot.transform.rotation = Quaternion.Euler(new Vector3(0, Random.Range(-120f, 120f), 0));
         bot.Move();
-        bot.transform.rotation = Quaternion.Euler(new Vector3(0, Random.Range(-60f, 60f), 0));
     }
 
     public void OnExecute(Bot bot)
@@ -23,8 +23,12 @@ public class PatrolState : IState
         if (elapsedTime < duration)
         {
             elapsedTime += Time.deltaTime;
-            bot.navMeshAgent.SetDestination(bot.destinationTransform.position);
-            bot.transform.Rotate(0, randomRotateValue, 0);
+            if(bot.CheckDestinationIsOutOfMap()){
+                bot.navMeshAgent.velocity = Vector3.zero; // dung lai
+                bot.transform.rotation = Quaternion.LookRotation(-bot.transform.forward); // quay 180 do
+            }
+            bot.navMeshAgent.SetDestination(bot.destinationTransform.position); // di ve phia truoc mat
+            bot.transform.Rotate(0, randomRotateValue, 0); // chuyen dong tron deu
             if (bot.enemy != null && elapsedTime > 0.8f) // bot only attacks after 0.8 seconds patrol
             {
                 bot.ChangeState(new AttackState());

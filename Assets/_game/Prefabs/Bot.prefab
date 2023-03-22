@@ -406,7 +406,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b3a20df9fd851cd49a1e8d3e2a8c24c2, type: 2}
+  - {fileID: 2100000, guid: ccecb6915528ad7449d039e0759649a3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -436,8 +436,8 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1231964804049882150}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
+  m_IsTrigger: 1
+  m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -455,6 +455,7 @@ GameObject:
   - component: {fileID: 1231964804762354421}
   - component: {fileID: 1231964804762354420}
   - component: {fileID: 1231964804762354418}
+  - component: {fileID: 8863841287834388547}
   m_Layer: 6
   m_Name: Bot
   m_TagString: bot
@@ -522,7 +523,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3.5
+  m_Speed: 5
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -562,6 +563,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterData: {fileID: 0}
   body: {fileID: 7077754673271344712}
+  blackMaterial: {fileID: 2100000, guid: cbe3fff465a4d7443b02f7a534510c08, type: 2}
+  whiteMaterial: {fileID: 2100000, guid: 8ff873adbd2b69845bd40f1a46c04549, type: 2}
+  skinnedMeshRenderer: {fileID: 1611786501517623723}
   onHandWeapon: {fileID: 1231964804049882150}
   isMoving: 0
   isDead: 0
@@ -571,10 +575,29 @@ MonoBehaviour:
   targetWeapon: {fileID: 1231964803859190133}
   weaponPool: {fileID: 1231964803907272067}
   capsulCollider: {fileID: 1231964804762354422}
+  target: {fileID: 8863841287834388547}
   destinationTransform: {fileID: 1231964803633816998}
   navMeshAgent: {fileID: 1231964804762354421}
   characterAnimation: {fileID: 1231964804762354420}
   enemy: {fileID: 0}
+  botName: {fileID: 0}
+--- !u!114 &8863841287834388547
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1231964804762354419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 411060de4483b5e4c9847cd3cbc18554, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetColor: {r: 0, g: 0, b: 0, a: 1}
+  needBoxIndicator: 1
+  needArrowIndicator: 1
+  needDistanceText: 0
+  indicator: {fileID: 0}
 --- !u!1001 &1231964804394800961
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -638,11 +661,24 @@ PrefabInstance:
       propertyPath: m_Name
       value: Character_Optimieze2
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 38f9296dc39c27647a0119314baf12a2, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8237072887224533061, guid: 38f9296dc39c27647a0119314baf12a2, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 38f9296dc39c27647a0119314baf12a2, type: 3}
 --- !u!1 &1759417831011575277 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -8542655298583481684, guid: 38f9296dc39c27647a0119314baf12a2, type: 3}
+  m_PrefabInstance: {fileID: 1231964804394800961}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &1611786501517623723 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -8699012472884554006, guid: 38f9296dc39c27647a0119314baf12a2, type: 3}
   m_PrefabInstance: {fileID: 1231964804394800961}
   m_PrefabAsset: {fileID: 0}
 --- !u!95 &4244755320589603105 stripped
