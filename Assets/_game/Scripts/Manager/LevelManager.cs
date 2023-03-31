@@ -27,7 +27,7 @@ public class LevelManager : MonoBehaviour
 
     private void Update()
     {
-        if(characterList.Count == 1 && player.isDead == false)
+        if(currentAlive==1 && player.isDead == false)
         {
             UIManager.instance.ShowWinPanel();
         }
@@ -40,6 +40,7 @@ public class LevelManager : MonoBehaviour
         UIManager.instance.ShowJoystick();
         currentAlive = initialAlive;
         isGaming = false;
+
     }
 
     public void DeleteCharacters()
