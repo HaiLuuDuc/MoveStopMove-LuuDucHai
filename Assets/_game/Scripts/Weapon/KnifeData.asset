@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: KnifeData
   m_EditorClassIdentifier: 
   weaponType: 0
-  icon: {fileID: 0}
-  mesh: {fileID: -3669228104775074923, guid: 1ad4bb26bb859264fb2e577ead52221f, type: 3}
-  weaponMaterials:
+  weaponName: Knife
+  mesh: {fileID: 3043151951978447633, guid: fb0879d7dfe7a504292da9cf36ccbe91, type: 3}
+  weaponMats:
   - {fileID: 2100000, guid: a8014a058dfaad84f8046cc001d17a75, type: 2}
   - {fileID: 2100000, guid: 284f06a4f3a08384ca17755a91fd4fb1, type: 2}
+  weaponCost: 10

@@ -4,27 +4,49 @@ using UnityEngine;
 
 public class WeaponPool : MonoBehaviour
 {
-    public static WeaponPool instance;
+    [SerializeField] private Transform weaponClones;
     public GameObject prefab;
     public int poolSize = 5;
     public Character owner;
-    private List<GameObject> pool = new List<GameObject>();
+    public List<GameObject> pool = new List<GameObject>();
+
+    //singleton
+    public static WeaponPool instance;
     private void Awake()
     {
         instance = this;
     }
     void Start()
     {
+        OnInit();
+    }
+
+    public void OnInit()
+    {
         for (int i = 0; i < poolSize; i++)
         {
-            GameObject obj = Instantiate(prefab);
-            obj.SetActive(false);
-            Weapon weapon = obj.GetComponent<Weapon>();
-            weapon.weaponPool = this;
-            weapon.owner = this.owner;
+            GameObject newWeapon = Instantiate(prefab); // sinh ra 1 weapon moi
+            newWeapon.SetActive(false);
+            Weapon weapon = newWeapon.GetComponent<Weapon>();
+            weapon.SetOwnerAndWeaponPool(this.owner, this);
+            weapon.transform.localScale = Vector3.one;
+            weapon.transform.localRotation = Quaternion.Euler(new Vector3(90,0,0));
+            weapon.child.localRotation = Quaternion.Euler(Vector3.zero);
+            weapon.GetComponent<BoxCollider>().enabled = true;
+            newWeapon.transform.SetParent(weaponClones);
             owner.pooledWeaponList.Add(weapon);
-            pool.Add(obj);
+            pool.Add(newWeapon);
         }
+    }
+
+    public void OnDestroy()
+    {
+        for (int i = 0; i < poolSize; i++)
+        {
+            Destroy(pool[i]);
+        }
+        pool.Clear();
+        owner.pooledWeaponList.Clear();
     }
 
     public GameObject GetObject()
@@ -46,7 +68,6 @@ public class WeaponPool : MonoBehaviour
 
     public void ReturnToPool(GameObject obj)
     {
-        obj.transform.localPosition = Vector3.zero;
         obj.SetActive(false);
     }
 }

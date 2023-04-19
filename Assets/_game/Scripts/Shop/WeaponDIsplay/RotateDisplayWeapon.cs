@@ -5,7 +5,6 @@ using UnityEngine;
 public class RotateDisplayWeapon : MonoBehaviour
 {
     [SerializeField] private float speedRotate;
-    [SerializeField] private List<GameObject> weapons = new List<GameObject>();
 
     void Update()
     {

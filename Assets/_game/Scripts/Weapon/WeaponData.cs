@@ -8,15 +8,17 @@ public enum WeaponType
     Hammer = 1,
     Boomerang = 2,
 }
+
 [CreateAssetMenu(fileName = "WeaponData", menuName = "ScriptableObjects/WeaponData", order = 1)]
 public class WeaponData : ScriptableObject
 {
     public WeaponType weaponType;
-    public Sprite icon;
-    public Mesh mesh;
-    public Material[] weaponMaterials;
+    public string weaponName;
+    public GameObject weaponObject;
+    public Material[] weaponMats;
+    public int weaponCost;
     public Material GetWeaponMaterial(int type)
     {
-        return weaponMaterials[(int)type];
+        return weaponMats[(int)type];
     }
 }

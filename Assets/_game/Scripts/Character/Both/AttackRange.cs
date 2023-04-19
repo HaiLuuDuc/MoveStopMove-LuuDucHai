@@ -7,7 +7,7 @@ public class AttackRange : MonoBehaviour
     [SerializeField] Character character;
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject != this.gameObject)
+        if(other.gameObject != this.gameObject && character.isDead == false)
         {
             if (other.gameObject.CompareTag(Constant.BOT)||other.gameObject.CompareTag(Constant.PLAYER))
             {

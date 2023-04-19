@@ -4,18 +4,39 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
-    [SerializeField] WeaponData weaponData;
-    public WeaponPool weaponPool;
-    public Character owner;
+    public WeaponData weaponData;
+    public Transform child;
+    public MeshRenderer meshRenderer;
+    private WeaponPool weaponPool;
+    private Character owner;
+    public int currentMaterialIndex;
+    public bool isStuckAtObstacle;
+    public bool isPurchased;
     //private MaterialType weaponMaterialType;
     //private int weaponStatus;
     private void Start()
     {
-
+        currentMaterialIndex = 0;
+        isStuckAtObstacle = false;
     }
-    private void OnEnable()
+    public void ChangeMaterial(int index)
     {
-        
+        meshRenderer.material = weaponData.GetWeaponMaterial(index);
+    }
+    public Character GetOwner()
+    {
+        return this.owner;
+    }
+    public void SetOwnerAndWeaponPool(Character owner, WeaponPool weaponPool)
+    {
+        this.owner = owner;
+        this.weaponPool = weaponPool;
+    }
+    public IEnumerator ReturnToPoolAfterSeconds()
+    {
+        yield return new WaitForSeconds(1);
+        weaponPool.ReturnToPool(this.gameObject);
+        yield return null;
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -23,27 +44,22 @@ public class Weapon : MonoBehaviour
         {
             Character character = other.gameObject.GetComponent<Character>();
             if(character != this.owner){
-                transform.rotation = Quaternion.Euler(Vector3.zero);
                 weaponPool.ReturnToPool(this.gameObject);
-                //this.owner.TurnBigger();
+                this.owner.TurnBigger();
+                //play sound
+                /*if (AudioManager.instance.IsInDistance(this.transform))
+                {
+                    AudioManager.instance.Play(SoundType.Die);
+                }*/
+            }
+            if(character is Bot && this.owner is Player)
+            {
+                LevelManager.instance.coin += 10;
+                UIManager.instance.UpdateCoin();
             }
         }
-    }
-    /*public void ChangeWeaponMaterial(int material)    
-    {
-        Material[] materials = new Material[meshRenderer.materials.Length];
-        for (int i = 0; i<materials.Length; i++)
-        {
-            materials[i] = null;
-            materials[i] = weaponData.GetWeaponMaterial(material) ;
-        }
-        meshRenderer.materials = materials;
-    }*/
-    /*public void ChangeWeaponMaterial(MaterialType materialType)
-    {
-        weaponMaterialType = materialType;
-        meshRenderer.material = weaponData.GetWeaponMaterial(weaponMaterialType);
-    }*/
 
+    }
+  
 }
 

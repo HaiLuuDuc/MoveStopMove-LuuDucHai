@@ -1,41 +1,93 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Player : Character
 {
-    [SerializeField] private CharacterAnimation characterAnimation;
+    [SerializeField] private Material whiteMaterial;
+    [SerializeField] private Rigidbody rb;
 
-
-    protected override void Start()
+    protected void Start()
     {
-        base.Start();
         OnInit();
     }
 
     public override void OnInit() {
         base.OnInit();
-        isMoving = false;
-        isDead = false;
-        enemyList.Clear();
-        transform.position = new Vector3(30.1900005f, 56.0499992f, -8.63000011f);
-        characterAnimation.ChangeAnim(Constant.IDLE);
+        SetPosAndRot();
+        StopMoving();
+        GetWeaponFromInventory();
+        characterAnim.ChangeAnim(Constant.IDLE);
         skinnedMeshRenderer.material = whiteMaterial;
+        isMoving = false;
     }
 
-    public void OnDeath() {
-        characterAnimation.ChangeAnim(Constant.DIE);
+    public override void OnDeath() {
+        DisableCollider();
+        characterAnim.ChangeAnim(Constant.DIE);
         isDead = true;
-        skinnedMeshRenderer.material = blackMaterial;
+        skinnedMeshRenderer.material = deathMaterial;
         LevelManager.instance.DeleteThisElementInEnemyLists(this);
         LevelManager.instance.currentAlive--;
         LevelManager.instance.characterList.Remove(this);
         UIManager.instance.ShowLosePanel();
+        //AudioManager.instance.Play(SoundType.Lose);
+    }
+
+    public override void EnableCollider()
+    {
+        capsulCollider.enabled = true;
+        rb.velocity = Vector3.zero;
+        rb.useGravity = true;
+    }
+
+    public override void DisableCollider()
+    {
+        capsulCollider.enabled = false;
+        rb.velocity = Vector3.zero;
+        rb.useGravity = false;
+    }
+
+    public void StopMoving()
+    {
+        rb.velocity = Vector3.zero;
+    }
+
+    public void Idle()
+    {
+        characterAnim.ChangeAnim(Constant.IDLE);
+    }
+
+    public void Dance()
+    {
+        StopMoving();
+        characterAnim.ChangeAnim(Constant.DANCE);
+    }
+
+    public void GetWeaponFromInventory()
+    {
+        GameObject wp = Instantiate(WeaponShopManager.Instance.GetWeapon());
+        if (onHandWeapon != null)
+        {
+            Destroy(onHandWeapon);
+        }
+        onHandWeapon = wp;
+        DisplayOnHandWeapon();
+        onHandWeapon.transform.SetParent(rightHand.transform);
+        onHandWeapon.transform.localPosition = Vector3.zero;
+        onHandWeapon.transform.localRotation = Quaternion.Euler(Vector3.zero);
+        onHandWeapon.GetComponent<BoxCollider>().enabled = false;
+        wp.GetComponent<Weapon>().SetOwnerAndWeaponPool(this, this.weaponPool);
+        weaponPool.prefab = wp;
+        weaponPool.OnDestroy();
+        weaponPool.OnInit();
     }
 
     public void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag(Constant.WEAPON) && other.GetComponent<Weapon>().owner != this)
+        if (other.CompareTag(Constant.WEAPON) && other.GetComponent<Weapon>().GetOwner() != this)
         {
             OnDeath();
         }

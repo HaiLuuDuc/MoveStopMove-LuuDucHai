@@ -5,10 +5,7 @@ using UnityEngine;
 public class CharacterAnimation : MonoBehaviour
 {
     [SerializeField] private Animator anim;
-    public string currentAnim;
-    private void Start()
-    {
-    }
+    private string currentAnim;
 
     public void ChangeAnim(string animName)
     {

@@ -5,18 +5,28 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] private float speed;
+    [Header("Joystick:")]
     [SerializeField] private Joystick joystick;
+    
+    [Header("Animation:")]
     [SerializeField] private CharacterAnimation characterAnimation;
-    [SerializeField] private Player player;
+
+    [Header("Mouse:")]
     private Vector3 firstMousePosition;
     private Vector3 currentMousePosition;
     private Vector3 direction;
+    
+    [Header("Player Properties:")]
+    [SerializeField] private Player player;
+    [SerializeField] private float speed;
     public Rigidbody rb;
 
     void Update()
     {
-
+        if (LevelManager.instance.isGaming == false)
+        {
+            return;
+        }
         if (player.isDead == true)
         {
             UIManager.instance.HideJoystick();

@@ -1,58 +1,120 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Character : MonoBehaviour
+public abstract class Character : MonoBehaviour, ITurnBigger
 {
-    [SerializeField] protected CharacterData characterData;
-    [SerializeField] protected GameObject body;
-    [SerializeField] protected Material blackMaterial;
-    [SerializeField] protected Material whiteMaterial;
-    [SerializeField] protected SkinnedMeshRenderer skinnedMeshRenderer;
-    private Vector3 characterScaleOffset;
-    private Vector3 weaponScaleOffset;
-    private float scaleOffset;
+    [Header("Character Properties:")]
+    [SerializeField] protected CharacterAnimation characterAnim;
+    [SerializeField] protected Material deathMaterial;
+    [SerializeField] protected CapsuleCollider capsulCollider;
+    public SkinnedMeshRenderer skinnedMeshRenderer;
+
+    [Header("Weapon Properties:")]
     public GameObject onHandWeapon;
-    public bool isMoving = false;
-    public bool isDead = false;
+    public WeaponPool weaponPool;
+    protected WeaponType weaponType;
+
+    [Header("Lists:")]
     public List<Character> enemyList = new List<Character>();
     public List<Weapon> pooledWeaponList = new List<Weapon>();
 
-    protected virtual void Start()
-    {
-        OnInit();
-    }
-    protected virtual void Update()
-    {
-        
-    }
+    [Header("Character limbs:")]
+    [SerializeField] protected GameObject body;
+    public Transform rightHand;
+
+    [Header("Bool Variables:")]
+    public bool isDead = false;
+    public bool isMoving = false;
+    public bool isHaveHat;
+    public bool isHaveShield;
+
+
     public virtual void OnInit()
     {
-        scaleOffset = 0.2f;
-        characterScaleOffset = this.transform.localScale * scaleOffset; // 
-        weaponScaleOffset = onHandWeapon.transform.lossyScale * scaleOffset; // (.5,.5,.5) = (.5,.5,.5) * 0.2 = (.1,.1,.1)
+        EnableCollider();
+        ResetSize();
+        enemyList.Clear();
+        isDead = false;
     }
-    public void ChangeShort()
+
+    public abstract void OnDeath();
+
+    public abstract void EnableCollider();
+
+    public abstract void DisableCollider();
+
+    public virtual void SetPosAndRot()
     {
-        
+        transform.position = new Vector3(30f, -0.34f, -8.6f);
+        transform.rotation = Quaternion.Euler(new Vector3(0, 160, 0));
     }
-    public void ChangeWeapon()
+
+    public virtual void DisplayOnHandWeapon()
     {
-        
-    }
-    public void TurnBigger()
-    {
-        body.transform.localScale = (body.transform.localScale) + characterScaleOffset; ;
-        Vector3 newScale = (onHandWeapon.transform.lossyScale) + weaponScaleOffset; //weaponScaleOffset = (0.1,0.1,0.1)
-        // newScale = (0.5,0.5,0.5) + (0.1,0.1,0.1) = (0.6,0.6,0.6)
-        onHandWeapon.transform.localScale = Vector3.Scale(onHandWeapon.transform.localScale,newScale); // needtofix: ko chi onhandweapon ma cac pooledWeapon cung to ra
-        for(int i=0;i<pooledWeaponList.Count;i++)
+        if (this.onHandWeapon != null)
         {
-            pooledWeaponList[i].transform.localScale = Vector3.Scale(pooledWeaponList[i].transform.localScale, newScale);
+            this.onHandWeapon.SetActive(true);
         }
     }
 
-    
+    public virtual void UnDisplayOnHandWeapon()
+    {
+        if (this.onHandWeapon != null)
+        {
+            this.onHandWeapon.SetActive(false);
+        }
+    }
+
+    public virtual void TurnBigger()
+    {
+        TurnBiggerBody();
+        TurnBiggerWeapon();
+        if(this is Player)
+        {
+            CameraController.instance.MoveHigher();
+        }
+    }
+
+    public virtual void TurnBiggerBody()
+    {
+        Vector3 oldScale = body.transform.localScale;
+        Vector3 newScale = oldScale * Constant.SCALE_VALUE;
+        body.transform.localScale = newScale;
+    }
+
+    public virtual void TurnBiggerWeapon()
+    {
+        for(int i=0;i<weaponPool.pool.Count;i++)
+        {
+            GameObject wp = weaponPool.pool[i];
+            Vector3 oldBodyScale = wp.transform.localScale;
+            Vector3 newBodyScale = oldBodyScale * Constant.SCALE_VALUE;
+            wp.transform.localScale = newBodyScale;
+        }
+    }
+
+    public virtual void ResetSize()
+    {
+        ResetBodySize();
+        ResetWeaponSize();
+    }
+
+    public virtual void ResetBodySize()
+    {
+        this.transform.localScale = Vector3.one;
+    }
+
+    public virtual void ResetWeaponSize()
+    {
+        for (int i = 0; i < weaponPool.pool.Count; i++)
+        {
+            GameObject wp = weaponPool.pool[i];
+            wp.transform.localScale = Vector3.one;
+        }
+    }
 }

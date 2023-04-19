@@ -18,9 +18,9 @@ public class OffScreenIndicator : MonoBehaviour
     private Vector3 screenCentre;
     private Vector3 screenBounds;
 
-    private List<Target> targets = new List<Target>();
+    private List<IndicatorTarget> targets = new List<IndicatorTarget>();
 
-    public static Action<Target, bool> TargetStateChanged;
+    public static Action<IndicatorTarget, bool> TargetStateChanged;
 
     void Awake()
     {
@@ -40,7 +40,7 @@ public class OffScreenIndicator : MonoBehaviour
     /// </summary>
     void DrawIndicators()
     {
-        foreach(Target target in targets)
+        foreach(IndicatorTarget target in targets)
         {
             Vector3 screenPosition = OffScreenIndicatorCore.GetScreenPosition(mainCamera, target.transform.position);
             bool isTargetVisible = OffScreenIndicatorCore.IsTargetVisible(screenPosition);
@@ -76,7 +76,7 @@ public class OffScreenIndicator : MonoBehaviour
     /// </summary>
     /// <param name="target"></param>
     /// <param name="active"></param>
-    private void HandleTargetStateChanged(Target target, bool active)
+    private void HandleTargetStateChanged(IndicatorTarget target, bool active)
     {
         if(active)
         {

@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: Boomerang
   m_EditorClassIdentifier: 
   weaponType: 2
-  icon: {fileID: 0}
-  mesh: {fileID: -462981019419857548, guid: 31fea2401e8359746981c6b341d2e85f, type: 3}
-  weaponMaterials:
+  weaponName: Boomerang
+  mesh: {fileID: 1303498634483053066, guid: 6264f1d4cd61f7b45966350ccffd889a, type: 3}
+  weaponMats:
   - {fileID: 2100000, guid: f0818bd2a59942b42b52cf7faae19f2c, type: 2}
   - {fileID: 2100000, guid: a171113d88b8af6409e3c8387b234c6f, type: 2}
+  weaponCost: 30

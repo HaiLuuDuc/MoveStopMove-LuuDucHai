@@ -8,8 +8,5 @@ public class CircleBorder : MonoBehaviour
     void Update()
     {
         transform.position = characterTransform.position;
-        /*Debug.Log("Screen Point of circle border: " + Camera.main.WorldToScreenPoint(transform.position));
-        Debug.Log("Mouse position: " + Input.mousePosition);*/
-
     }
 }

@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: HammerData
   m_EditorClassIdentifier: 
   weaponType: 1
-  icon: {fileID: 0}
-  mesh: {fileID: 3174812724623785705, guid: ac13ad4c669869248a014580e7b5b687, type: 3}
-  weaponMaterials:
+  weaponName: Hammer
+  mesh: {fileID: 5650760630609830699, guid: 9ee627067c52a544eb03755ed514ec93, type: 3}
+  weaponMats:
   - {fileID: 2100000, guid: 3a57be6c39b4e5242b079da3ef191f21, type: 2}
   - {fileID: 2100000, guid: 5fbe6ba83a135b047952a79be662b442, type: 2}
+  weaponCost: 20

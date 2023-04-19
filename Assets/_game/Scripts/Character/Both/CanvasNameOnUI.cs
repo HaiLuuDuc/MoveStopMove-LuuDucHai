@@ -35,4 +35,9 @@ public class CanvasNameOnUI : MonoBehaviour
     {
         targetTransform = targetTF;
     }
+
+    public void SetColor(Bot bot)
+    {
+        tmp.color = bot.skinnedMeshRenderer.material.color;
+    }
 }

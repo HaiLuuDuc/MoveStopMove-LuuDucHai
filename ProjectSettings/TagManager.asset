@@ -8,6 +8,7 @@ TagManager:
   - character
   - player
   - weapon
+  - obstacle
   layers:
   - Default
   - TransparentFX
